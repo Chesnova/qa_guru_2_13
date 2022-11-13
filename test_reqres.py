@@ -23,3 +23,9 @@ def test_unknown_list_schema(reqres_session):
 
     assert result.json() == S(schemas.unknown_list_schema)
     assert result.json()['data'][2]['id'] == 3
+
+
+def test_delete(reqres_session):
+    result = reqres_session.delete('/api/users/2')
+    assert result.status_code == 204
+    assert result.text == ''
