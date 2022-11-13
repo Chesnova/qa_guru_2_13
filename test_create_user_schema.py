@@ -1,14 +1,13 @@
 import requests
 from pytest_voluptuous import S
 from schemas import schemas
-from utils.base_session import reqres_session
 
 
-def test_create_user_schema():
+def test_create_user_schema(reqres_session):
     name = "Raul"
     job = "journalist"
 
-    response = reqres_session() .post(
+    response = reqres_session.post(
         url='/api/users',
         json={
             "name": name,
@@ -22,11 +21,11 @@ def test_create_user_schema():
     assert response.json() == S(schemas.create_user_schema)
 
 
-def test_update_user_schema():
+def test_update_user_schema(reqres_session):
     name = 'William'
     job = 'accountant'
 
-    response = reqres_session().put(
+    response = reqres_session.put(
         url='/api/users/2',
         json={
             "name": name,
@@ -39,14 +38,14 @@ def test_update_user_schema():
     assert response.json() == S(schemas.update_user_schema)
 
 
-def test_delete_user():
-    response = reqres_session().delete(url='/api/users/2')
+def test_delete_user(reqres_session):
+    response = reqres_session.delete(url='/api/users/2')
 
     assert response.status_code == 204
 
 
-def test_get_single_user():
-    response = reqres_session().get(url='/api/users/2')
+def test_get_single_user(reqres_session):
+    response = reqres_session.get(url='/api/users/2')
 
     assert response.status_code == 200
     assert response.json()["data"]
@@ -57,11 +56,11 @@ def test_get_single_user():
     assert response.json() == S(schemas.get_single_user_schema)
 
 
-def test_successful_register_user():
+def test_successful_register_user(reqres_session):
     email = 'eve.holt@reqres.in'
     password = 'pistol'
 
-    response = reqres_session().post(
+    response = reqres_session.post(
         url='/api/register',
         json={
             "email": email,

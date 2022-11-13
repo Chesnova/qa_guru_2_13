@@ -1,3 +1,4 @@
+import allure
 from requests import Session
 
 
@@ -7,8 +8,7 @@ class BaseSession(Session):
         super().__init__()
 
     def request(self, method, url, **kwargs):
-        return super().request(method, url=f'{self.base_url}{url}', **kwargs)
+        with allure.step(f'{method} {url}'):
+            return super().request(method, url=f'{self.base_url}{url}', **kwargs)
 
 
-def reqres_session():
-    return BaseSession(base_url='https://reqres.in')
